@@ -1,3 +1,11 @@
+
+############## Ignored files and directories #######
+
+dist
+
+
+############## Generated ignores ###################
+
 # Logs
 logs
 *.log

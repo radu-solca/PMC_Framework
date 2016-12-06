@@ -2,7 +2,8 @@ var gulp = require('gulp'),
     ts = require('gulp-typescript'),
     browserify = require('gulp-browserify'),
     rename = require('gulp-rename'),
-    nodemon = require('gulp-nodemon');
+    nodemon = require('gulp-nodemon'),
+    livereload = require('gulp-livereload');
  
 /**
  * Compile typescript files
@@ -31,18 +32,23 @@ gulp.task('ts', function () {
  * Start node.js server, and listen for changes
  */
 gulp.task('start', ['ts'], function () {
-  var stream = nodemon({ 
-            script: 'www.js',
-            ext: 'ts',
-            tasks: ['ts']
-  });
 
-  stream
-    .on('restart', function () {
-        console.log('restarted!')
-    })
-    .on('crash', function() {
-        console.error('Application has crashed!\n')
-        stream.emit('restart', 10)  // restart the server in 10 seconds 
+    livereload.listen();
+
+    var stream = nodemon({ 
+                script: 'www.js',
+                ext: 'ts',
+                tasks: ['ts']
     });
+
+    stream
+        .on('restart', function () {
+            console.log('Restarted!');
+            gulp.src('app.js')
+                .pipe(livereload());
+        })
+        .on('crash', function() {
+            console.error('Application has crashed!\n');
+            stream.emit('restart', 10);  // restart the server in 10 seconds 
+        });
 })

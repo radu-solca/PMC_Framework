@@ -11,13 +11,11 @@ var remoteServer = new (require("./dist/RemoteServer").RemoteServer)();
 var remoteClient = new (require("./dist/RemoteClient").RemoteClient)();
 
 server.listen(4000, function () {
+    remoteServer.run();
     console.log('Server started.');
 });
 
 app.get('/', function (req, res, next) {
-   
-    remoteServer.run();
-
     try {
         res.send("server");
     } catch (e) {

@@ -36,7 +36,7 @@ gulp.task('start', ['ts'], function () {
     livereload.listen();
 
     var stream = nodemon({ 
-                script: 'www.js',
+                script: 'server.js',
                 ext: 'ts',
                 tasks: ['ts']
     });
@@ -44,7 +44,7 @@ gulp.task('start', ['ts'], function () {
     stream
         .on('restart', function () {
             console.log('Restarted!');
-            gulp.src('app.js')
+            gulp.src('server.js')
                 .pipe(livereload());
         })
         .on('crash', function() {

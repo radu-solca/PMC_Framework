@@ -6,18 +6,32 @@
 
 var app = require("express")();
 var server = require("http").Server(app);
+var RemoteServer = require("./dist/RemoteServer").RemoteServer;
+var RemoteClient = require("./dist/RemoteClient").RemoteClient;
 
-var remoteServer = new (require("./dist/RemoteServer").RemoteServer)();
-var remoteClient = new (require("./dist/RemoteClient").RemoteClient)();
+
 
 server.listen(4000, function () {
+
+    //listen for remotes
+    var remoteServer = new RemoteServer();
     remoteServer.run();
+
+    //print any messages from the remote to the console
+    remoteServer.on('msg', function(msg){
+        console.log(msg);
+    });
+
     console.log('Server started.');
+    
 });
 
 app.get('/', function (req, res, next) {
+
+    //should display output here: how?
+
     try {
-        res.send("server");
+        res.send('<div id="test"> server </div>');
     } catch (e) {
         next(e)
     }
@@ -25,7 +39,9 @@ app.get('/', function (req, res, next) {
 
 app.get('/remote', function (req, res, next) {
 
-    remoteClient.run();
+    //connect a remote to the server.
+    var remote = new RemoteClient();
+    remote.run();
 
     try {
         res.send("client");

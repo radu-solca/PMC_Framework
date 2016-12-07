@@ -10,5 +10,9 @@ export class RemoteClient{
     public run(){
         this.socket = io.connect("http://127.0.0.1:3000");
         this.socket.emit("msg","hello server!");
+
+        // window.addEventListener('deviceorientation', (event) => {
+        //     this.socket.emit("msg",[Math.round(event.gamma), Math.round(event.beta)]);
+        // });
     }
 }
